@@ -37,7 +37,8 @@ class _ApiVersion1(object):
 
     def _call_api(self, command, arguments):
         validate_query_arguments(arguments)
-        url = self._make_url('property_listings', arguments)
+        url = self._make_url(command, arguments)
+	#print 'url ' + str(url)
         f = download_url(url)
         parsed = json.loads(f.read())
         if 'error_code' in parsed:
@@ -64,8 +65,9 @@ class _ApiVersion1(object):
     def zoopla_estimates(self):
         raise NotImplementedError("This method isn't yet implemented.")
 
-    def average_sold_prices(self):
-        raise NotImplementedError("This method isn't yet implemented.")
+    def average_sold_prices(self, **kwargs):
+        areas = self._call_api('average_sold_prices', kwargs)
+	return areas
 
     def _call_api_paged(self, command, args, max_results, result_processor):
         """
